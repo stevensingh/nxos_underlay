@@ -1,0 +1,13 @@
+---
+- name: Testing
+  connection: local
+  gather_facts: no
+
+  hosts: spine
+
+  tasks:
+  - name: Ensure an interface is a Layer 3 port and that it has the proper description
+    nxos_interface:
+      name: Ethernet1/1
+      description: 'Configured by Lord of the Gays, steve'
+      mode: layer3
