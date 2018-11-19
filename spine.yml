@@ -1,0 +1,87 @@
+
+
+
+---
+
+- name: build n9k1
+  hosts: n9k1 
+  connection: local
+  gather_facts: no 
+
+  tasks:
+    
+    - name: CREATE LOOP 0
+      nxos_interface: interface=loopback0 state=present host={{ inventory_hostname }}
+      register: data
+
+    - name: Set interface IPv4 address
+      nxos_l3_interface:
+        name: loopback0
+        ipv4: 100.100.100.1/32
+
+
+    - name: UPDATE ADMIN STATE
+      nxos_interface: interface=loopback0 admin_state=up host={{ inventory_hostname }}
+      register: data
+
+
+    - name:  ADD DESCR
+      nxos_interface: interface=loopback0 description='primary loopback n9k1' host={{ inventory_hostname }}
+      register: data
+
+    - name: Ensure ospf is enabled
+      nxos_feature:
+       feature: ospf
+       state: enabled
+
+    - nxos_ospf:
+       ospf: 1
+       state: present
+
+    - name: Ensure bgp is enabled
+      nxos_feature:
+       feature: bgp
+       state: enabled
+      
+
+- name: build n9k2
+  hosts: n9k2
+  connection: local
+  gather_facts: no
+
+  tasks:
+
+    - name: CREATE LOOP 0
+      nxos_interface: interface=loopback0 state=present host={{ inventory_hostname }}
+      register: data
+
+    - name: Set interface IPv4 address
+      nxos_l3_interface:
+        name: loopback0
+        ipv4: 100.100.100.2/32
+
+
+    - name: UPDATE ADMIN STATE
+      nxos_interface: interface=loopback0 admin_state=up host={{ inventory_hostname }}
+      register: data
+
+
+    - name:  ADD DESCR
+      nxos_interface: interface=loopback0 description='primary loopback n9k2' host={{ inventory_hostname }}
+      register: data
+
+    - name: Ensure ospf is enabled
+      nxos_feature:
+       feature: ospf
+       state: enabled
+
+    - nxos_ospf:
+       ospf: 1
+       state: present
+
+    - name: Ensure bgp is enabled
+      nxos_feature:
+       feature: bgp
+       state: enabled
+
+
