@@ -29,6 +29,7 @@
       nxos_interface: interface=loopback0 description='primary loopback n9k1' host={{ inventory_hostname }}
       register: data
 
+
     - name: Ensure ospf is enabled
       nxos_feature:
        feature: ospf
@@ -38,11 +39,19 @@
        ospf: 1
        state: present
 
+    - nxos_interface_ospf:
+        interface: "{{ item.interface }}"
+        ospf: 1
+        area: 0
+        cost: default 
+        state: present
+     with_items: "{{ ospf_interfaces }}"
+    
     - name: Ensure bgp is enabled
       nxos_feature:
        feature: bgp
        state: enabled
-      
+
 
 - name: build n9k2
   hosts: n9k2

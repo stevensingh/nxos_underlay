@@ -18,7 +18,15 @@
       nxos_feature:
        feature: ospf
        state: disabled
+    
+    - nxos_interface_ospf:
+        interface: loopback0
+        ospf: 1
+        area: 0
+        cost: default
+        state: absent  
 
+ 
     - name: Ensure bgp is disabled
       nxos_feature:
        feature: bgp

@@ -1,9 +1,15 @@
 ---
   interfaces:
-    - { interface: "loopback0", ipv4: "100.100.100.1/32" }
-    - { interface: "Ethernet1/1", ipv4: "172.16.0.1/30" }
-    - { interface: "Ethernet1/2", ipv4: "172.16.0.5/30" }
+    - { interface: "loopback0", ipv4: "100.100.100.1/32", description: "Primary Looback Int" }
+    - { interface: "Ethernet1/1", ipv4: "172.16.0.1/30", description: "Eth1/1 n9k1 to Eth1/1 n9k3" }
+    - { interface: "Ethernet1/2", ipv4: "172.16.0.5/30", description: "Eth1/2 n9k1 to Eth1/1 n9k4" }
+    - { interface: "Ethernet1/3", ipv4: "172.16.0.9/30", description: "Eth1/3 n9k1 to Eth1/2 n9k4" } 
+
 
   ospf_interfaces:
     - { interface: "loopback0" }
+    - { interface: "Ethernet1/1" }
+    - { interface: "Ethernet1/2" }
+    - { interface: "Ethernet1/3" }
+
 
