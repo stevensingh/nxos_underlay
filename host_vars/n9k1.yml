@@ -1,0 +1,9 @@
+---
+  interfaces:
+    - { interface: "loopback0", ipv4: "100.100.100.1/32" }
+    - { interface: "Ethernet1/1", ipv4: "172.16.0.1/30" }
+    - { interface: "Ethernet1/2", ipv4: "172.16.0.5/30" }
+
+  ospf_interfaces:
+    - { interface: "loopback0" }
+
