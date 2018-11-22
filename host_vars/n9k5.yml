@@ -5,6 +5,13 @@
     - { interface: "Ethernet1/2", ipv4: "172.16.0.10/30", description: "Eth1/2 n9k5 to Eth1/3 n9k2" }
 
 
+  nxos_feature:
+   - { feature: "bgp" }
+   - { feature: "pim" }
+   - { feature: "ospf" }
+   - { feature: "interface-vlan" }
+   - { feature: "vn-segment-vlan-based" }
+
   ospf_interfaces:
     - { interface: "loopback0" }
     - { interface: "Ethernet1/1" }

@@ -1,13 +1,16 @@
 ---
 - name: build switch
-  hosts: spine
+  hosts: n9k1
   connection: local
   gather_facts: no
 
   tasks:
 
-    - debug: var=item
-      with_items: "{{ interfaces }}"
+    - name: Enable NXOS features
+      nxos_feature:
+        feature: "{{ item.feature }}"
+        state: enabled
+      with_items: "{{ nxos_feature }}"
 
     - name: Configure interfaces
       nxos_interface:
@@ -24,11 +27,6 @@
         name: "{{ item.interface }}"
       with_items: "{{ interfaces }}"
 
-    - name: Ensure ospf is enabled
-      nxos_feature:
-        feature: ospf
-        state: enabled
-
     - name: Enable ospf process
       nxos_ospf:
         ospf: 1
@@ -42,3 +40,6 @@
         cost: default
         state: present
       with_items: "{{ ospf_interfaces }}"
+
+
+
