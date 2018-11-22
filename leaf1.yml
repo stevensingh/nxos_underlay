@@ -69,3 +69,58 @@
         send_community: both
         route_reflector_client: "false"
       with_items: "{{ bgp_neighbors }}"
+
+    - name: CONFIGURE VLAN TO VNI MAPPING
+      nxos_vlan:
+        vlan_id: "{{ item.vlan_id }}"
+        mapped_vni: "{{ item.vni_id }}"
+      with_items:
+      - "{{ vlans_l2vni }}"
+      - "{{ vlans_l3vni }}"
+
+    - name: CONFIGURE L2 INTERFACES/SWITCHPORTS
+      nxos_interface:
+        interface: "{{ item.interface }}"
+        mode: layer2
+        admin_state: up
+      with_items: "{{ l2_interfaces }}"
+
+    - name: CONFIGURE L2 INTERFACES/SWITCHPORTS (TRUNKS)
+      nxos_switchport:
+        interface: "{{ item.interface }}"
+        mode: trunk
+        trunk_vlans: 10-15,20-25,30-35,40-45,50-55
+      with_items: "{{ l2_interfaces }}"
+
+    - name: CONFIGURE TENANT VRFs
+      nxos_vrf:
+        vrf: "{{ item.vrf }}"
+        vni: "{{ item.vni_id }}"
+        rd: auto
+        state: present
+      with_items: "{{ vrfs }}"
+
+    - name: CONFIGURE TENANT VRFs (cont'd)
+      nxos_vrf_af:
+        vrf: "{{ item.vrf }}"
+        afi: ipv4
+        safi: unicast
+        route_target_both_auto_evpn: true
+        state: present
+      with_items: "{{ vrfs }}"
+
+    - name: CONFIGURE L2 EVPN VRFs
+      nxos_evpn_vni:
+        vni: "{{ item.vni_id }}"
+        route_distinguisher: auto
+        route_target_both: auto
+      with_items: "{{ vlans_l2vni }}"
+
+    - name: CONFIGURE TENANT VRFs UNDER BGP PROCESS
+      nxos_bgp_af:
+        asn: "{{ asn }}"
+        vrf: "{{ item.vrf }}"
+        afi: "{{ item.afi }}"
+        safi: "{{ item.safi }}"
+        advertise_l2vpn_evpn: "true"
+      with_items: "{{ vrfs }}"

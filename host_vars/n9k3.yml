@@ -33,6 +33,15 @@
 
   rp_address: 111.111.111.1
 
+  l3_interfaces:
+  - { interface: Ethernet1/1 }
+  - { interface: Ethernet1/2 }
+
+  l2_interfaces:
+  - { interface: Ethernet1/5 }
+  - { interface: Ethernet1/6 }
+  - { interface: Ethernet1/7 }
+
   vlans_l2vni:
   - { vlan_id: 11, vni_id: 10011, addr: 10.0.11.1, mask: 24, mcast_grp: 239.0.0.11, vrf: Tenant-1 }
   - { vlan_id: 12, vni_id: 10012, addr: 10.0.12.1, mask: 24, mcast_grp: 239.0.0.12, vrf: Tenant-1 }
