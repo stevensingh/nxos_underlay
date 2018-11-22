@@ -45,3 +45,27 @@
         state: present
       with_items: "{{ ospf_interfaces }}"
 
+
+    - name: CONFIGURE BGP ASN AND ROUTER ID
+      nxos_bgp:
+        asn: "{{ asn }}"
+        router_id: "{{ router_id }}"
+        state: present
+
+    - name: CONFIGURE BGP NEIGHBORS
+      nxos_bgp_neighbor:
+        asn: "{{ asn }}"
+        neighbor: "{{ item.neighbor }}"
+        remote_as: "{{ item.remote_as }}"
+        update_source: "{{ item.update_source }}"
+      with_items: "{{ bgp_neighbors }}"
+
+    - name: CONFIGURE L2VPN EVPN ADDRESS FAMILY FOR BGP NEIGHBORS
+      nxos_bgp_neighbor_af:
+        asn: "{{ asn }}"
+        neighbor: "{{ item.neighbor }}"
+        afi: l2vpn
+        safi: evpn
+        send_community: both
+        route_reflector_client: "true"
+      with_items: "{{ bgp_neighbors }}"

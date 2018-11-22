@@ -1,6 +1,7 @@
 ---
   interfaces:
-    - { interface: "loopback0", ipv4: "100.100.100.1/32", description: "Primary Looback Int" }
+    - { interface: "loopback0", ipv4: "100.100.100.1/32", description: "Primary Looback RID Int" }
+    - { interface: "loopback1", ipv4: "111.111.111.1/32", description: "Pim RP Loopback int" }
     - { interface: "Ethernet1/1", ipv4: "172.16.0.1/30", description: "Eth1/1 n9k1 to Eth1/1 n9k3" }
     - { interface: "Ethernet1/2", ipv4: "172.16.0.5/30", description: "Eth1/2 n9k1 to Eth1/1 n9k4" }
     - { interface: "Ethernet1/3", ipv4: "172.16.0.9/30", description: "Eth1/3 n9k1 to Eth1/2 n9k4" } 
@@ -20,3 +21,14 @@
     - { interface: "Ethernet1/3" }
 
 
+  router_id: 100.100.100.1
+
+  asn: 65001
+
+  address_families:
+  - { afi: l2vpn, safi: evpn }
+
+  bgp_neighbors:
+  - { remote_as: 65001, neighbor: 100.100.100.3, update_source: Loopback0 }
+  - { remote_as: 65001, neighbor: 100.100.100.4, update_source: Loopback0 }
+  - { remote_as: 65001, neighbor: 100.100.100.5, update_source: Loopback0 }
