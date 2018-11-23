@@ -13,7 +13,7 @@
     - { feature: "ospf" } 
     - { feature: "interface-vlan" }
     - { feature: "vn-segment-vlan-based" }
-    
+  
   ospf_interfaces:
     - { interface: "loopback0" }
     - { interface: "Ethernet1/1" }

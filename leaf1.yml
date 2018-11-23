@@ -12,6 +12,10 @@
         feature: "{{ item.feature }}"
         state: enabled
       with_items: "{{ nxos_feature }}"
+  
+    - name: enable nv overlay feature
+      nxos_config:
+        lines: feature nv overlay
 
     - name: ENABLE NV OVERLAY EVPN
       nxos_evpn_global:
@@ -150,8 +154,20 @@
       nxos_vxlan_vtep_vni:
         interface: nve1
         vni: "{{ item.vni_id }}"
+        multicast_group: "{{ item.mcast_grp }}"
+        #ingress_replication: bgp
+        suppress_arp: true
+      with_items: "{{ vlans_l2vni }}"
 
-    #- name: ENABLE VXLAN VTEP NVE INTERFACE
+    - name: CONFIGURE VXLAN VTEP NVE INTERFACE L3VNI MAPPING
+      nxos_vxlan_vtep_vni:
+        interface: nve1
+        vni: "{{ item.vni_id }}"
+        assoc_vrf: "true"
+      with_items: "{{ vlans_l3vni }}"
+
+
+   #- name: ENABLE VXLAN VTEP NVE INTERFACE
     #  nxos_interface:
     #    interface: nve1
     #    state: present
@@ -161,7 +177,6 @@
     - name: CONFIGURE ANYCAST GW MAC
       nxos_config:
         lines: fabric forwarding anycast-gateway-mac 1234.5678.9000
-        provider: "{{ nxos_provider  }}"
       with_items: "{{ l3_interfaces }}"
 
     - name: CONFIGURE SVIs THAT ARE MAPPED TO VNIs
