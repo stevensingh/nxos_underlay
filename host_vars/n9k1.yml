@@ -23,6 +23,8 @@
 
   router_id: 100.100.100.1
 
+  rp_address: 111.111.111.1
+
   asn: 65001
 
   address_families:

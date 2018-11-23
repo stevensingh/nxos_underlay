@@ -45,6 +45,15 @@
         state: present
       with_items: "{{ ospf_interfaces }}"
 
+    - name: CONFIGURE PIM RP
+      nxos_pim_rp_address:
+        rp_address: "{{ rp_address }}"
+
+    - name: CONFIGURE PIM INTERFACES
+      nxos_pim_interface:
+        interface: "{{ item.interface }}"
+        sparse: true
+      with_items: "{{ l3_interfaces }}"
 
     - name: CONFIGURE BGP ASN AND ROUTER ID
       nxos_bgp:
@@ -124,3 +133,68 @@
         safi: "{{ item.safi }}"
         advertise_l2vpn_evpn: "true"
       with_items: "{{ vrfs }}"
+
+    - name: CONFIGURE VXLAN VTEP NVE INTERFACE
+      nxos_interface:
+        interface: nve1
+        state: present
+        admin_state: up
+
+    - name: CONFIGURE VXLAN VTEP NVE INTERFACE FOR EVPN CONTROL PLANE
+      nxos_vxlan_vtep:
+        interface: nve1
+        host_reachability: "true"
+        source_interface: Loopback0
+
+    - name: CONFIGURE VXLAN VTEP NVE INTERFACE L2VNI MAPPING
+      nxos_vxlan_vtep_vni:
+        interface: nve1
+        vni: "{{ item.vni_id }}"
+
+    #- name: ENABLE VXLAN VTEP NVE INTERFACE
+    #  nxos_interface:
+    #    interface: nve1
+    #    state: present
+    #    admin_state: up
+    #    provider: "{{ nxos_provider }}"
+
+    - name: CONFIGURE ANYCAST GW MAC
+      nxos_config:
+        lines: fabric forwarding anycast-gateway-mac 1234.5678.9000
+        provider: "{{ nxos_provider  }}"
+      with_items: "{{ l3_interfaces }}"
+
+    - name: CONFIGURE SVIs THAT ARE MAPPED TO VNIs
+      nxos_interface:
+        interface: "vlan{{ item.vlan_id }}"
+        admin_state: up
+      with_items:
+      - "{{ vlans_l2vni }}"
+      - "{{ vlans_l3vni }}"
+
+    - name: ASSOCIATE INTERFACES TO TENANT VRF
+      nxos_vrf_interface:
+        vrf: "{{ item.vrf }}"
+        interface: "vlan{{ item.vlan_id }}"
+      with_items:
+      - "{{ vlans_l2vni }}"
+      - "{{ vlans_l3vni }}"
+
+    - name: ENABLE ANYCAST GW UNDER L2VNI SVI
+      nxos_interface:
+        interface: "vlan{{ item.vlan_id }}"
+        fabric_forwarding_anycast_gateway: true
+      with_items: "{{ vlans_l2vni }}"
+
+    - name: CONFIGURE IP FORWARD UNDER L3VNI SVI
+      nxos_interface:
+        interface: "vlan{{ item.vlan_id }}"
+        ip_forward: enable
+      with_items: "{{ vlans_l3vni }}"
+
+    - name: CONFIGURE IP ADDRESS TO L2VNI SVI
+      nxos_ip_interface:
+        interface: "vlan{{ item.vlan_id }}"
+        addr: "{{ item.addr }}"
+        mask: "{{ item.mask }}"
+      with_items: "{{ vlans_l2vni }}"
