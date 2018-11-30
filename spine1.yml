@@ -32,7 +32,7 @@
       with_items: "{{ interfaces }}"
 
     - name: CHANGE INTERFACE MTU TO 9216
-      nxos_mtu:
+      nxos_interface:
         mtu: 9216
         interface: "{{ item.interface }}"
         state: present
@@ -93,7 +93,4 @@
         route_reflector_client: "true"
       with_items: "{{ bgp_neighbors }}"
 
-    - name: SAVE RUN CONFIG TO STARTUP CONFIG
-      nxos_config:
-        save: yes
 

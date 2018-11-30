@@ -35,6 +35,13 @@
         name: "{{ item.interface }}"
       with_items: "{{ interfaces }}"
 
+    - name: CHANGE INTERFACE MTU TO 9216
+      nxos_interface:
+        mtu: 9216
+        interface: "{{ item.interface }}"
+        state: present
+      with_items: "{{ l3_interfaces }}"
+
     - name: Enable ospf process
       nxos_ospf:
         ospf: 1
@@ -214,6 +221,3 @@
         mask: "{{ item.mask }}"
       with_items: "{{ vlans_l2vni }}"
 
-    - name: SAVE RUN CONFIG TO STARTUP CONFIG
-      nxos_config:
-        save: yes
