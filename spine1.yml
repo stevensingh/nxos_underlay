@@ -31,6 +31,13 @@
         name: "{{ item.interface }}"
       with_items: "{{ interfaces }}"
 
+    - name: CHANGE INTERFACE MTU TO 9216
+      nxos_mtu:
+        mtu: 9216
+        interface: "{{ item.interface }}"
+        state: present
+      with_items: "{{ l3_interfaces }}"
+
     - name: Enable ospf process
       nxos_ospf:
         ospf: 1
@@ -44,6 +51,22 @@
         cost: default
         state: present
       with_items: "{{ ospf_interfaces }}"
+
+    - name: CONFIGURE PIM ANYCAST RP
+      nxos_config:
+        lines:
+          - "ip pim anycast-rp {{ rp_address }} {{ s1_loopback }}"
+          - "ip pim anycast-rp {{ rp_address }} {{ s2_loopback }}"
+
+    - name: CONFIGURE PIM RP
+      nxos_pim_rp_address:
+        rp_address: "{{ rp_address }}"
+
+    - name: CONFIGURE PIM INTERFACES
+      nxos_pim_interface:
+        interface: "{{ item.interface }}"
+        sparse: true
+      with_items: "{{ l3_interfaces }}"
 
 
     - name: CONFIGURE BGP ASN AND ROUTER ID
@@ -69,3 +92,8 @@
         send_community: both
         route_reflector_client: "true"
       with_items: "{{ bgp_neighbors }}"
+
+    - name: SAVE RUN CONFIG TO STARTUP CONFIG
+      nxos_config:
+        save: yes
+

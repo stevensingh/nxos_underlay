@@ -213,3 +213,7 @@
         addr: "{{ item.addr }}"
         mask: "{{ item.mask }}"
       with_items: "{{ vlans_l2vni }}"
+
+    - name: SAVE RUN CONFIG TO STARTUP CONFIG
+      nxos_config:
+        save: yes

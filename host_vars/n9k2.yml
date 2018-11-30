@@ -12,15 +12,33 @@
    - { feature: "ospf" }
    - { feature: "interface-vlan" }
    - { feature: "vn-segment-vlan-based" }
+   - { feature: "bash-shell" }
 
   ospf_interfaces:
     - { interface: "loopback0" }
+    - { interface: "loopback1" }
     - { interface: "Ethernet1/1" }
     - { interface: "Ethernet1/2" }
     - { interface: "Ethernet1/3" }
 
-  router_id: 100.100.100.2
+  l3_interfaces:
+  - { interface: Ethernet1/1 }
+  - { interface: Ethernet1/2 }
+  - { interface: Ethernet1/3 }
+  - { interface: Ethernet1/4 }
+  - { interface: Ethernet1/5 }
+  - { interface: Ethernet1/6 }
+  - { interface: Ethernet1/7 }
+  - { interface: Ethernet1/8 }
+  - { interface: Ethernet1/9 }
 
+
+  router_id: 100.100.100.2
+ 
+  s1_loopback: 100.100.100.1
+
+  s2_loopback: 100.100.100.2
+  
   rp_address: 111.111.111.1  
 
   asn: 65001

@@ -11,6 +11,7 @@
    - { feature: "ospf" }
    - { feature: "interface-vlan" }
    - { feature: "vn-segment-vlan-based" }
+   - { feature: "bash-shell" }
 
   ospf_interfaces:
     - { interface: "loopback0" }
