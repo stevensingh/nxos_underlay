@@ -52,6 +52,13 @@
         state: present
       with_items: "{{ ospf_interfaces }}"
 
+    - name: CONFIGURE OSPF INTERFACES NETWORK P2P
+      nxos_config:
+        lines: ip ospf network point-to-point
+        parents:
+          - 'interface {{ item.interface }}'
+      with_items: "{{ l3_interfaces }}"
+
     - name: CONFIGURE PIM ANYCAST RP
       nxos_config:
         lines:
@@ -66,7 +73,7 @@
       nxos_pim_interface:
         interface: "{{ item.interface }}"
         sparse: true
-      with_items: "{{ l3_interfaces }}"
+      with_items: "{{ pim_interfaces }}"
 
 
     - name: CONFIGURE BGP ASN AND ROUTER ID
