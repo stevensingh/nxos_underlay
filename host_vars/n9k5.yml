@@ -13,6 +13,7 @@
    - { feature: "interface-vlan" }
    - { feature: "vn-segment-vlan-based" }
    - { feature: "bash-shell" }
+   - { feature: "scp-server" }
 
   ospf_interfaces:
     - { interface: "loopback0" }
