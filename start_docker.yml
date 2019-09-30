@@ -1,0 +1,12 @@
+---
+- name: start docker
+  hosts: all
+  connection: local
+  gather_facts: no
+  tasks:
+
+   - name: run bash
+     nxos_command:
+       commands:
+         - run bash
+         - service docker start
