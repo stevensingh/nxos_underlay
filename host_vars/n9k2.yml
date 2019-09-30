@@ -4,7 +4,7 @@
     - { interface: "loopback1", ipv4: "111.111.111.1/32", description: "Pim RP Loopback int" }
     - { interface: "Ethernet1/1", ipv4: "172.16.0.13/30", description: "Eth1/1 n9k2 to Eth1/2 n9k3" }
     - { interface: "Ethernet1/2", ipv4: "172.16.0.17/30", description: "Eth1/2 n9k2 to Eth1/2 n9k4" }
-    - { interface: "Ethernet1/3", ipv4: "172.16.0.21/30", description: "Eth1/3 n9k2 to Eth1/1 n9k5" }
+    - { interface: "Ethernet1/3", ipv4: "172.16.0.9/30", description: "Eth1/3 n9k2 to Eth1/2 n9k5" }
     - { interface: "Ethernet1/4", ipv4: "172.16.0.29/30", description: "Eth1/4 n9k1 to Eth1/2 n9k6" }
 
   nxos_feature:
@@ -15,7 +15,9 @@
    - { feature: "vn-segment-vlan-based" }
    - { feature: "bash-shell" }
    - { feature: "scp-server" }
-
+   - { feature: "nxapi" }
+   - { feature: "restconf" }
+   - { feature: "netconf" }
   ospf_interfaces:
     - { interface: "loopback0" }
     - { interface: "loopback1" }

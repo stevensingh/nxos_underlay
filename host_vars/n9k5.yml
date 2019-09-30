@@ -14,6 +14,9 @@
    - { feature: "vn-segment-vlan-based" }
    - { feature: "bash-shell" }
    - { feature: "scp-server" }
+   - { feature: "nxapi" }
+   - { feature: "restconf" }
+   - { feature: "netconf" }
 
   ospf_interfaces:
     - { interface: "loopback0" }

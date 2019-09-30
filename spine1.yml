@@ -100,4 +100,7 @@
         route_reflector_client: "true"
       with_items: "{{ bgp_neighbors }}"
 
-
+    - name: Enable NXAPI with  HTTP and sandbox enabled
+      nxos_nxapi:
+        enable_http: false
+        https: yes

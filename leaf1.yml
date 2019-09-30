@@ -132,7 +132,6 @@
       nxos_vrf_af:
         vrf: "{{ item.vrf }}"
         afi: ipv4
-        safi: unicast
         route_target_both_auto_evpn: true
         state: present
       with_items: "{{ vrfs }}"
@@ -229,3 +228,8 @@
         mask: "{{ item.mask }}"
       with_items: "{{ vlans_l2vni }}"
 
+    - name: Enable NXAPI with no HTTP, HTTPS at port 443 and sandbox enabled
+      nxos_nxapi:
+        enable_http: false
+        https_port: 443
+        https: yes
