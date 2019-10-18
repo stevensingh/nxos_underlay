@@ -18,6 +18,8 @@
    - { feature: "nxapi" }
    - { feature: "restconf" }
    - { feature: "netconf" }
+   - { feature: "ntp" }
+
   ospf_interfaces:
     - { interface: "loopback0" }
     - { interface: "loopback1" }

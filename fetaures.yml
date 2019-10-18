@@ -1,0 +1,19 @@
+---
+- name: add features
+  hosts: all
+  connection: local
+  gather_facts: no
+
+  tasks:
+
+
+    - name: enable nxos_features
+      nxos_feature:
+        feature: "{{ item.feature }}"
+        state: enabled
+      with_items: "{{ nxos_feature }}"
+
+    - name: ENABLE NV OVERLAY EVPN
+      nxos_evpn_global:
+        nv_overlay_evpn: true
+ 
