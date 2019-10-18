@@ -1,6 +1,6 @@
 ---
 - name: Configure Access + Monitoring Services
-  hosts: all
+  hosts: 
   connection: local
   gather_facts: no
 
