@@ -1,0 +1,57 @@
+---
+- name: Configure Access + Monitoring Services
+  hosts: all
+  connection: local
+  gather_facts: no
+
+  tasks:
+
+    - name: Configure NTP
+      nxos_ntp:
+        server: 143.210.16.201
+        state: present
+
+#    - name: Configure Remote Logging
+#      nxos_logging:
+#       dest: server
+#       dest_level: 5
+#       remote_server: 172.17.188.30
+#       state: present
+#       timestamp: milliseconds
+
+    - name: SNMP Contact
+      nxos_snmp_contact:
+        contact: networks@redi.com
+        state: present
+
+    - name: SNMP Location
+      nxos_snmp_location:
+        location: BEDFORD
+        state: present
+
+    - name: SNMP Server
+      nxos_snmp_host:
+        snmp_host: 172.17.188.30
+        community: r3adth1s
+        state: present
+
+    - name: SNMP Traps
+      nxos_snmp_traps:
+        group: all
+        state: enabled
+
+    - name: Enable TACACS
+      nxos_feature:
+        feature: tacacs
+        state: enabled
+
+#    - name: TACACS SERVER HOST CONFIGURATION
+#      nxos_aaa_server_host:
+#        state: present
+#        server_type: tacacs
+#        tacacs_port: default
+#        host_timeout: default
+#        address: 172.17.188.32
+#        key: r3@DyRed1
+#        encrypt_type: '7'
+
