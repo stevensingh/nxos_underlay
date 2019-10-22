@@ -1,0 +1,32 @@
+---
+- name: build switch
+  hosts: all
+  connection: local
+  gather_facts: no
+
+  tasks:
+
+   
+
+    - name: Enable ospf process
+      nxos_ospf:
+        ospf: 1
+        state: present
+
+    - name: Configure ospf interfaces
+      nxos_interface_ospf:
+        interface: "{{ item.interface }}"
+        ospf: 1
+        area: 0
+        cost: default
+        state: present
+      with_items: "{{ ospf_interfaces }}"
+
+    - name: CONFIGURE OSPF INTERFACES NETWORK P2P
+      nxos_config:
+        lines: ip ospf network point-to-point
+        parents:
+          - 'interface {{ item.interface }}'
+      with_items: "{{ l3_interfaces }}"
+
+
