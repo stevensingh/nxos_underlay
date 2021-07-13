@@ -17,7 +17,7 @@
    - { feature: "nxapi" }
    - { feature: "restconf" }
    - { feature: "netconf" }
-
+    - { feature: "lldp" }
 
   ospf_interfaces:
     - { interface: "loopback0" }
